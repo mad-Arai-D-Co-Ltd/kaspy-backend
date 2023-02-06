@@ -19,8 +19,8 @@ module.exports = {
     logpath: 'kaspy/logs/',
   },
   auth: {
-    jwtSecret: process.env.JWT_SECRET,
-    jwtExpiresIn: process.env.JWT_EXPIRES_IN || '1d',
+    jwtSecret: process.env.JWT_SECRET || 'kaspyoffice',
+    jwtExpiresIn: process.env.JWT_EXPIRES_IN || '365d',
     saltRounds: process.env.SALT_ROUND || 10,
     refreshTokenSecret:
       process.env.REFRESH_TOKEN_SECRET || 'uhwLE3mY6f8SrQuCrBs9R5==',

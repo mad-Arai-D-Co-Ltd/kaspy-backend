@@ -4,14 +4,14 @@ module.exports = {
   development: {
     username: 'root',
     password: null,
-    database: 'immtrip_development',
+    database: 'kaspy_development',
     host: '127.0.0.1',
     dialect: 'mysql',
   },
   test: {
     username: 'root',
     password: null,
-    database: 'immtrip_test',
+    database: 'kaspy_test',
     host: '127.0.0.1',
     dialect: 'mysql',
   },

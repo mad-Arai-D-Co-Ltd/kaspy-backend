@@ -17,6 +17,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId'
       });
 
+      Users.hasMany(models.products, {
+        foreignKey: 'createdByUserId'
+      });
+
+      Users.hasMany(models.product_updates, {
+        foreignKey: 'updateByUserId'
+      });
+
+      Users.hasMany(models.order_templates, {
+        foreignKey: 'createdByUserId'
+      });
+
     }
   }
   Users.init({

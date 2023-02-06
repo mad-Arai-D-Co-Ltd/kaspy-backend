@@ -1,25 +1,34 @@
 'use strict';
-
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('user_roles', {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('order_product_templates', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
+      orderTempId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'users',
+          model: 'order_templates',
           key: 'id',
         },
       },
-      roleId: {
+      productId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'roles',
+          model: 'products',
+          key: 'id',
+        },
+      },
+      quantity: {
+        type: Sequelize.FLOAT
+      },
+      unitId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'units',
           key: 'id',
         },
       },
@@ -33,8 +42,7 @@ module.exports = {
       }
     });
   },
-
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('user_roles');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('order_product_templates');
   }
 };
