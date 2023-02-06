@@ -27,6 +27,7 @@ app.use(api);
 app.set('db', require('../models/index'));
 
 app.use((req, res, next) => {
+  console.log(req.originalUrl)
   logger.log(
     'the url you are trying to reach is not hosted on our server',
     'error'
