@@ -97,7 +97,7 @@ class OrderController extends BaseController {
         attention: data.attention,
         email: data.email,
         tel: data.tel,
-        createdByUserId: data.createdByUserId.toString(),
+        createdByUserId: data.createdByUserId,
       }
       const updateNewTemplates = await super.updateByCustomWhere(req, 'order_templates',dataTemp,option);
       console.log(data);
