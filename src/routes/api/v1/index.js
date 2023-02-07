@@ -7,4 +7,5 @@ router.use('/product', require('./productRouter'));
 router.use('/unit', require('./unitRouter'));
 router.use('/order', require('./orderRouter'));
 router.use('/order-his', require('./orderHisRouter'));
+router.use('/analysis', require('./analysisRouter'));
 module.exports = router;

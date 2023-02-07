@@ -63,34 +63,69 @@ class OrderController extends BaseController {
    */
   static async updateOrderTemplate(req, res) {
     try {
-      const data = req.body.data;
+      const data = req.body;
       const orderTempId = req.params.orderTempId;
-      const schema = Joi.object({
-        customerName: Joi.string().allow("",null),
-        address: Joi.string().allow("",null),
-        taxId: Joi.string().allow("",null),
-        attention: Joi.string().allow("",null),
-        email: Joi.string().allow("",null),
-        tel: Joi.string().allow("",null),
-        createdByUserId: Joi.string().allow("",null),
-      });
-      const { error } = schema.validate(data);
+      // const schema = Joi.object({
+      //   customerName: Joi.string().allow("",null),
+      //   address: Joi.string().allow("",null),
+      //   taxId: Joi.string().allow("",null),
+      //   attention: Joi.string().allow("",null),
+      //   email: Joi.string().allow("",null),
+      //   tel: Joi.string().allow("",null),
+      //   createdByUserId: Joi.number().allow("",null),
+      // });
+      // const { error } = schema.validate(data);
+      
+      // if (error) {
+      //   requestHandler.validateJoi(
+      //     error,
+      //     400,
+      //     'bad request',
+      //     error ? error.details[0].message : ''
+      //   );
+      // }
 
-      if (error) {
-        requestHandler.validateJoi(
-          error,
-          400,
-          'bad request',
-          error ? error.details[0].message : ''
-        );
-      }
       const option = {
         where : {
             id: orderTempId
         }
       }
-      const updateNewTemplates = await super.updateByCustomWhere(req, 'order_templates',data,option);
-      
+      const dataTemp = {
+        customerName: data.customerName,
+        address: data.address,
+        taxId: data.taxId,
+        attention: data.attention,
+        email: data.email,
+        tel: data.tel,
+        createdByUserId: data.createdByUserId.toString(),
+      }
+      const updateNewTemplates = await super.updateByCustomWhere(req, 'order_templates',dataTemp,option);
+      console.log(data);
+      const prod = data.order_product_templates;
+      let dataProd;
+      await Object.values(prod).forEach(async(element,key) => {
+        dataProd = {
+            orderTempId: orderTempId,
+            productId: element.productId,
+            quantity: element.quantity,
+            unitId: element.unitId,
+        }
+        const optionProd = {
+          where : {
+              id: element.id
+          }
+        }
+        const updateNewProducts = await super.updateByCustomWhere(req, 'order_product_templates',dataProd,optionProd);
+        if (!_.isNull(updateNewProducts)) {
+            
+        } else {
+          requestHandler.throwError(
+            422,
+            'Unprocessable Entity',
+            'Error create new order product history'
+          );
+        }
+      });
 
       if (!_.isNull(updateNewTemplates)) {
         requestHandler.sendSuccess(
