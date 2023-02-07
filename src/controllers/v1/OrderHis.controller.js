@@ -6,6 +6,7 @@ const HelperController = require("./Helper.Controller");
 const RequestHandler = require("../../utils/RequestHandler");
 const Logger = require("../../utils/logger");
 const logger = new Logger();
+const { Op } = require("sequelize");
 const Sequelize = require("sequelize");
 const requestHandler = new RequestHandler(logger);
 const config = require("../../config/appconfig");
@@ -45,8 +46,8 @@ class OrderController extends BaseController {
       const firstDay = new Date(year, month, 1);
       const lastDay = new Date(year, month + 1, 0);
       const options = {
-        where: { createdAt: { $between: [firstDay, lastDay] } },
-        order: [["id", "asc"]],
+        where:{"createdAt" : {[Op.between]: [firstDay, lastDay]}},
+        order: [['id', 'asc']],
       };
 
       // create no
