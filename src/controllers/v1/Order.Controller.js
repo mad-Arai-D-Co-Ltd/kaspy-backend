@@ -100,11 +100,10 @@ class OrderController extends BaseController {
         createdByUserId: data.createdByUserId,
       }
       const updateNewTemplates = await super.updateByCustomWhere(req, 'order_templates',dataTemp,option);
-      console.log(data);
+
       const prod = data.order_product_templates;
-      let dataProd;
       await Object.values(prod).forEach(async(element,key) => {
-        dataProd = {
+        const dataProd = {
             orderTempId: orderTempId,
             productId: element.productId,
             quantity: element.quantity,
@@ -115,16 +114,35 @@ class OrderController extends BaseController {
               id: element.id
           }
         }
-        const updateNewProducts = await super.updateByCustomWhere(req, 'order_product_templates',dataProd,optionProd);
-        if (!_.isNull(updateNewProducts)) {
+
+        const orderProdTempHave = await super.getList(req, 'order_product_templates', optionProd);
+
+        if(Object.values(orderProdTempHave).length > 0){
+          const updateNewProducts = await super.updateByCustomWhere(req, 'order_product_templates',dataProd,optionProd);
+          if (!_.isNull(updateNewProducts)) {
             
+          } else {
+            requestHandler.throwError(
+              422,
+              'Unprocessable Entity',
+              'Error update new order product history'
+            );
+          }
         } else {
-          requestHandler.throwError(
-            422,
-            'Unprocessable Entity',
-            'Error create new order product history'
-          );
+          const createNewTemplates = await super.create(req, 'order_product_templates',dataProd);
+          if (!_.isNull(createNewTemplates)) {
+            
+          } else {
+            requestHandler.throwError(
+              422,
+              'Unprocessable Entity',
+              'Error create new order product history'
+            );
+          }
         }
+
+        
+        
       });
 
       if (!_.isNull(updateNewTemplates)) {
