@@ -12,8 +12,12 @@ router.post('/create-order-his',auth.isAuth, orderHisController.createOrderHisto
 /**
  * /api/v1/order-his/order-his-list
  * */
-router.get("/order-his-list", orderHisController.getOrderHisList);
+router.post("/order-his-list", orderHisController.getOrderHisList);
 
+/**
+ * /api/v1/order-his/update-prod-his
+ * */
+router.post('/update-prod-his',auth.isAuth, orderHisController.updateOrderProdCostHistory);
 
 
 // Order historys //

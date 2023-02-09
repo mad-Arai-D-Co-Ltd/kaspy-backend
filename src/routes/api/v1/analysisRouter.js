@@ -35,6 +35,11 @@ router.get("/weekly-users", analysisController.getWeeklyNewUser);
 router.get("/shop-order-total", analysisController.getShopOrderTemp);
 
 
+/**
+ * /api/v1/analysis/weekly-top-spend
+ * */
+router.get("/weekly-top-spend", analysisController.getWeeklyOrderTop);
+
 
 // Order historys //
 

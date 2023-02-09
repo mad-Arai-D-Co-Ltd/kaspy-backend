@@ -133,6 +133,9 @@ class OrderController extends BaseController {
    */
   static async getOrderHisList(req, res) {
     try {
+      const data = req.body;
+      const firstday = data.firstday;
+      const lastday = data.lastday;
       const options = {
         include: [
           {
@@ -144,6 +147,7 @@ class OrderController extends BaseController {
             ],
           },
         ],
+        where:{"createdAt" : {[Op.between]: [firstday, lastday]}},
         order: [["id", "asc"]],
       };
       const result = await super.getList(req, "order_historys", options);
@@ -156,6 +160,46 @@ class OrderController extends BaseController {
       requestHandler.sendError(req, res, err);
     }
   }
+
+   /**
+   * It's a function that update a order history.
+   */
+   static async updateOrderProdCostHistory(req, res) {
+    try {
+      const data = req.body;
+      let updateNewProducts;
+      await Object.values(data).forEach(async(element,key) => {
+        const dataProd = {
+          costPrice: element.costPrice,
+        }
+        const optionProd = {
+          where : {
+              id: element.id
+          }
+        }
+
+        updateNewProducts = await super.updateByCustomWhere(req, 'order_product_historys',dataProd,optionProd);
+      });
+
+      if (!_.isNull(updateNewProducts)) {
+        requestHandler.sendSuccess(
+          res,
+          'successfully updated new templates',
+          201
+        )(updateNewProducts);
+      } else {
+        requestHandler.throwError(
+          422,
+          'Unprocessable Entity',
+          'Error update new order product history'
+        );
+      }
+
+    } catch (err) {
+      requestHandler.sendError(req, res, err);
+    }
+  }
+
 }
 
 module.exports = OrderController;
