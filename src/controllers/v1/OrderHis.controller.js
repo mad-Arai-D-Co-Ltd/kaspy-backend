@@ -41,19 +41,25 @@ class OrderController extends BaseController {
       //   }
 
       const dateObj = new Date();
-      var month = ("0" + (dateObj.getUTCMonth() + 1)).slice(-2);
+      var month = dateObj.getUTCMonth();
+      var monthText = ("0" + (dateObj.getUTCMonth() + 1)).slice(-2);
       var year = dateObj.getUTCFullYear();
       const firstDay = new Date(year, month, 1);
-      const lastDay = new Date(year, month + 1, 0);
+      const lastDay = new Date(year, month +1, 0);
+
+      
+
+
       const options = {
         where:{"createdAt" : {[Op.between]: [firstDay, lastDay]}},
         order: [['id', 'asc']],
       };
-
+      
       // create no
       const result = await super.getList(req, "order_historys", options);
       const length = (result.length + 1).toString();
       const pad = "00000";
+      
       const ans = pad.substring(0, pad.length - length.length) + length;
 
       const dataOrderHis = {
@@ -64,7 +70,7 @@ class OrderController extends BaseController {
         attention: data.attention,
         email: data.email,
         tel: data.tel,
-        no: "IV" + year + month + ans,
+        no: "IV" + year + monthText + ans,
         createdByUserId: data.createdByUserId,
       };
 
