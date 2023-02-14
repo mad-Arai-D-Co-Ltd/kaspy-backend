@@ -87,13 +87,13 @@ class OrderController extends BaseController {
       await Object.values(prod).forEach(async (element, key) => {
         dataProd = {
           orderHisId: id,
-          productId: element.product.product.id,
-          productCode: element.product.product.productCode,
-          productName: element.product.product.name,
-          price: element.product.product.price,
+          productId: element.product.id,
+          productCode: element.product.productCode,
+          productName: element.product.name,
+          price: element.product.price,
           costPrice: element.costPrice,
           quantity: element.quantity,
-          unitId: element.unit.id,
+          unitId: element.unitId,
         };
         const createNewOrderProHistorys = await super.create(
           req,
