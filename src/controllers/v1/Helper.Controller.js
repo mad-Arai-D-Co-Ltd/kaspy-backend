@@ -13,7 +13,7 @@ class HelperController extends BaseController {
     static async totalUpdate(req, res,id) {
         try {
           const optionsSum = {
-            attributes: [[Sequelize.fn('sum', Sequelize.col('price')), 'total']],
+            attributes: [[Sequelize.fn('sum',Sequelize.where(Sequelize.col('price'),'*', Sequelize.col('quantity'))), 'total']],
             where:{"orderHisId" : id},
           };
           const sumData = await super.getList(req, 'order_product_historys', optionsSum);

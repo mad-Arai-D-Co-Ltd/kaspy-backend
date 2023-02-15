@@ -19,6 +19,13 @@ router.post("/order-his-list", orderHisController.getOrderHisList);
  * */
 router.post('/update-prod-his',auth.isAuth, orderHisController.updateOrderProdCostHistory);
 
+/**
+ * /api/v1/order-his/delete-order-his/{orderHisId} DELETE
+ */
+router.delete('/delete-order-his/:id',
+//  auth.isAuth, 
+orderHisController.deleteOrderHis); 
+
 
 // Order historys //
 

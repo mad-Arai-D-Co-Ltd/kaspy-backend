@@ -206,6 +206,44 @@ class OrderController extends BaseController {
     }
   }
 
+  /**
+   * It's a function that delete order his
+   */
+  static async deleteOrderHis(req, res) {
+    try {
+      
+      const optionsProd = {
+        where:{orderHisId: req.params.id,},
+      };
+
+      const resultProd = await super.deleteByIdWithOptions(req, "order_product_historys", optionsProd);
+
+      if(!_.isNull(resultProd)){
+        const options = {
+          where:{id: req.params.id,},
+        };
+  
+        const result = await super.deleteByIdWithOptions(req, "order_historys", options);
+
+        if(!_.isNull(result)){
+          requestHandler.sendSuccess(
+            res,
+            "Delete order historys successfully!"
+          )({ result });
+        }
+      } else {
+        requestHandler.throwError(
+          422,
+          'Unprocessable Entity',
+          'Error delete order product history'
+        );
+      }
+
+    } catch (err) {
+      requestHandler.sendError(req, res, err);
+    }
+  }
+
 }
 
 module.exports = OrderController;
