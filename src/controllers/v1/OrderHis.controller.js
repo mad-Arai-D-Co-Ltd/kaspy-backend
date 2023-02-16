@@ -215,8 +215,11 @@ class OrderController extends BaseController {
       const optionsProd = {
         where:{orderHisId: req.params.id,},
       };
-
-      const resultProd = await super.deleteByIdWithOptions(req, "order_product_historys", optionsProd);
+      const resultProdList = await super.getList(req, "order_product_historys", optionsProd);
+      let resultProd;
+      if(resultProdList.length > 0){
+        resultProd = await super.deleteByIdWithOptions(req, "order_product_historys", optionsProd);
+      }
 
       if(!_.isNull(resultProd)){
         const options = {

@@ -101,6 +101,28 @@ class OrderController extends BaseController {
       }
       const updateNewTemplates = await super.updateByCustomWhere(req, 'order_templates',dataTemp,option);
 
+      const deleteProd = data.deleteId;
+      
+      await Object.values(deleteProd).forEach(async(element,key) => {
+        
+        const optionProd = {
+          where : {
+              id: element.id
+          }
+        }
+        const deleteProdTemp = await super.deleteByIdWithOptions(req, 'order_product_templates', optionProd);
+        if (!_.isNull(deleteProdTemp)) {
+            
+        } else {
+          requestHandler.throwError(
+            422,
+            'Unprocessable Entity',
+            'Error delete product temp'
+          );
+        }
+
+      });
+
       const prod = data.order_product_templates;
       await Object.values(prod).forEach(async(element,key) => {
         const dataProd = {
@@ -125,7 +147,7 @@ class OrderController extends BaseController {
             requestHandler.throwError(
               422,
               'Unprocessable Entity',
-              'Error update new order product history'
+              'Error update new order product temp'
             );
           }
         } else {
@@ -136,13 +158,10 @@ class OrderController extends BaseController {
             requestHandler.throwError(
               422,
               'Unprocessable Entity',
-              'Error create new order product history'
+              'Error create new order product temp'
             );
           }
         }
-
-        
-        
       });
 
       if (!_.isNull(updateNewTemplates)) {
