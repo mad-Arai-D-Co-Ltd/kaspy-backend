@@ -177,6 +177,7 @@ class OrderController extends BaseController {
       await Object.values(data).forEach(async(element,key) => {
         const dataProd = {
           costPrice: element.costPrice,
+          quantity: element.quantity,
         }
         const optionProd = {
           where : {
